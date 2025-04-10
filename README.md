@@ -7,13 +7,13 @@
 ```bash
 git clone https://github.com/Yanix2x2/wine.git
 ```
-* Настройте виртуальное окружение:
+* Настройте виртуальное окружение
     - Для Windows:
 ```bash
 python -m venv env
 venv\Scripts\activate
 ```
-* Установите зависимости:
+* Установите зависимости
 ```bash
 pip install -r requirements.txt
 ```
