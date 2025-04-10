@@ -9,7 +9,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 import pandas
 
 
-def year_format(age):
+def get_age_suffix(age):
     if 11 <= age % 100 <= 19:
         return 'лет'
 
@@ -58,7 +58,7 @@ def main():
 
     rendered_page = template.render(
         year=age,
-        year_format=year_format(age),
+        noun=get_age_suffix(age),
         categories=get_product_categories(path_to_file)
 
     )
