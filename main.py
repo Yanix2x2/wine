@@ -1,6 +1,9 @@
+import os
+from dotenv import load_dotenv
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 import datetime
 from collections import defaultdict
+import argparse
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import pandas
@@ -19,9 +22,9 @@ def year_format(age):
     return 'лет'
 
 
-def get_product_categories():
+def get_product_categories(path_to_file):
     excel_data_product = pandas.read_excel(
-        'wine.xlsx',
+        io=path_to_file,
         na_values='None',
         keep_default_na=False
     ).to_dict(orient='records')
@@ -33,6 +36,17 @@ def get_product_categories():
 
 
 def main():
+    load_dotenv()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--file', type=str, help='Path to Excel file')
+    args = parser.parse_args()
+
+    path_to_file = (
+        args.file 
+        if args.file 
+        else os.getenv('PATH_TO_FILE', default='wine.xlsx')
+    )
+
     age = datetime.datetime.now().year - 1920
 
     env = Environment(
@@ -45,7 +59,7 @@ def main():
     rendered_page = template.render(
         year=age,
         year_format=year_format(age),
-        categories=get_product_categories()
+        categories=get_product_categories(path_to_file)
 
     )
     with open('index.html', 'w', encoding="utf8") as file:
