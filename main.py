@@ -34,7 +34,6 @@ def get_product_categories(path_to_file):
 
 
 def main():
-    # load_dotenv()
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--file', 
