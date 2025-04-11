@@ -1,5 +1,3 @@
-import os
-from dotenv import load_dotenv
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 import datetime
 from collections import defaultdict
@@ -36,16 +34,16 @@ def get_product_categories(path_to_file):
 
 
 def main():
-    load_dotenv()
+    # load_dotenv()
     parser = argparse.ArgumentParser()
-    parser.add_argument('--file', type=str, help='Path to Excel file')
-    args = parser.parse_args()
-
-    path_to_file = (
-        args.file 
-        if args.file 
-        else os.getenv('PATH_TO_FILE', default='wine.xlsx')
+    parser.add_argument(
+        '--file', 
+        '-f',
+        type=str,
+        default='wine.xlsx',
+        help='Path to Excel file'
     )
+    args = parser.parse_args()
 
     age = datetime.datetime.now().year - 1920
 
@@ -59,7 +57,7 @@ def main():
     rendered_page = template.render(
         year=age,
         noun=get_age_suffix(age),
-        categories=get_product_categories(path_to_file)
+        categories=get_product_categories(args.file)
 
     )
     with open('index.html', 'w', encoding="utf8") as file:
